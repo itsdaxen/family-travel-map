@@ -908,11 +908,13 @@
         />
       </svg>
     </section>
-    <h2 class="total-count">Total Countries: <%=total%></h2>
+    <h2 class="total-count">Total Countries: <%=countries.length%></h2>
     <script>
-      <% for (let i = 0; i < total; i++) { %>
-        document.getElementById("<%= countries[i] %>").style.fill = "teal";
-      <% } %>
+      const visitedCountries = <%- JSON.stringify(countries) %>;
+      visitedCountries.forEach((country) => {
+        const el = document.getElementById(country);
+        if (el) el.style.fill = "teal";
+      });
     </script>
   </body>
 </html>
