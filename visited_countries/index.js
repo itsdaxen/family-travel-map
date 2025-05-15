@@ -57,7 +57,7 @@ app.post("/add", async (req, res) => {
 
     newCountry = await db.query(
       "Select country_code from countries WHERE country_name ILIKE $1",
-      [`${newCountry}%`]
+      [`%${newCountry}%`]
     );
     newCountry = newCountry.rows[0].country_code;
     await db.query("INSERT INTO visited_countries (country_code) VALUES ($1)", [
