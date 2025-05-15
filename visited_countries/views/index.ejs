@@ -13,7 +13,7 @@
         type="text"
         name="country"
         autofocus
-        placeholder="<%= locals.error ? error :  'Enter country name'%>"
+        placeholder="<%= error ? 'Error! Please try again' : success ? 'Successful! Enter another name!' : 'Enter country name'%>"
       />
       <button type="submit">Add</button>
     </form>
@@ -913,7 +913,7 @@
       const visitedCountries = <%- JSON.stringify(countries) %>;
       visitedCountries.forEach((country) => {
         const el = document.getElementById(country);
-        if (el) el.style.fill = "teal";
+        el ? el.style.fill = "teal" : null;
       });
     </script>
   </body>
