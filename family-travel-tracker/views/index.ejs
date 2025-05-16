@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Travel Tracker</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./styles/main.css" />
   </head>
 
@@ -11,22 +15,33 @@
     <section class="user-tab-section">
       <div class="user-tab-container">
         <ul>
-          <% users.forEach(el => { %>
-          <li id="userTab<%= el.id %>" onClick="handleClickOnUserTab(<%= el.id %>)"><%= el.name %></li>
+          <% users.forEach( user => { %>
+          <li
+            id="userTab<%= user.id %>"
+            onClick="handleClickOnUserTab(<%= user.id %>)"
+          >
+            <%= user.name %>
+          </li>
           <% }) %>
+          <!-- TODO: Add a new user tab with personal color -->
           <li class="add-user">+ add user</li>
         </ul>
       </div>
     </section>
 
-    <form action="/add"" method="post">
+    <form action="/add" method="post">
       <input
         type="text"
         name="country"
         autofocus
         placeholder="<%= error ? 'Error! Please try again' : success ? 'Successful! Enter another name!' : 'Enter country name'%>"
       />
-      <input id="activeUserField" type="hidden" name="activeUserID" value=" "/>
+      <input
+        id="activeUserField"
+        type="hidden"
+        name="activeUserID"
+        value="<%= Number(user) || 1 %>"
+      />
       <button type="submit">Add</button>
     </form>
 
@@ -921,37 +936,58 @@
       </svg>
     </section>
 
+    <!-- TODO fix total -->
     <h2 class="total-count">Total Countries: <%=countries.length%></h2>
   </body>
   <script>
-let activeUserID = 1;
-    function handleClickOnUserTab(id) {
-      document.querySelectorAll(".user-tab-container ul li").forEach((li) => {
-      li.classList.remove("active");
-    });
-      activeUserID = id;
-      document.querySelector(`#userTab${id}`).classList.add("active");
-      document.querySelector("#activeUserField").value = activeUserID;
-      console.log(activeUserID);
-      colorCountry();
+      let activeUserID = <%- !isNaN(Number(user)) ? Number(user) : 1 %>;
+
+      function handleClickOnUserTab(id) {
+        document.querySelectorAll(".user-tab-container ul li").forEach((li) => {
+        li.classList.remove("active");
+      });
+        activeUserID = id;
+        document.querySelector(`#userTab${id}`).classList.add("active");
+        document.querySelector("#activeUserField").value = activeUserID;
+        colorify();
+      }
+
+      function colorify() {
+
+        // User personal coloring
+        const users = <%- JSON.stringify(users) %>;
+        let userColor = "teal";
+        users.forEach( (user) => {
+          if (user.id === activeUserID) userColor = user.user_color;
+
+          let elementID = document.querySelector(`#userTab${user.id}`);
+          if (elementID) {
+          elementID.style.backgroundColor = user.user_color;
+
+
+          let colorParts = user.user_color.split(",");
+          let hue = colorParts[0].replace("hsl(", "");
+          let saturation = colorParts[1].replace("%", "");
+          let lightness = Number(colorParts[2].replace("%)",""));
+
+          const textL = lightness > 35 ? 20 : 90;
+          elementID.style.color = `hsl(${hue}, ${saturation}%, ${textL}%)`;
+        }});
+
+        // Visited countries logic
+      const visitedCountries = <%- JSON.stringify(countries) %>;
+      Array.from(document.querySelector(".ag-canvas_svg").children).forEach (
+          (child) => child.style.fill = null);
+      // Loop through all countries and check their id
+      visitedCountries.forEach((country) => {
+        const el = document.getElementById(country.country_code);
+        el && Number(country.user_id) === activeUserID ? el.style.fill = userColor : null;
+      });
     }
 
-
-    // TODO: make color dynamic
-    function colorCountry() {
-    const userColor = "teal"
-    const visitedCountries = <%- JSON.stringify(countries.map((el) => el)) %>;
-    // const countriesUserIDs = <%- JSON.stringify(countries.map((el) => el.user_id)) %>;
-    console.log(visitedCountries);
-    Array.from(document.querySelector(".ag-canvas_svg").children).forEach (
-        (child) => child.style.fill = null); 
-    // loop through all countries and check their id
-    visitedCountries.forEach((country) => {
-      const el = document.getElementById(country.country_code);
-      console.log(country.user_id);
-      el && Number(country.user_id) === activeUserID ? el.style.fill = userColor : null;
+    document.addEventListener('DOMContentLoaded', () => {
+      colorify();
     });
-  }
   </script>
   <script src="./scripts/main.js"></script>
 </html>

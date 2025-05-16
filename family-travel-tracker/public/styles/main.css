@@ -16,6 +16,8 @@
     var(--tab-sat),
     var(--tab-light-active)
   );
+
+  font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
 }
 html {
   box-sizing: border-box;

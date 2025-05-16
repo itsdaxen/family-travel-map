@@ -25,7 +25,8 @@ const db = new Pool({
 
 app.get("/", async (req, res) => {
   try {
-    const users = (await db.query("SELECT id, name FROM users")).rows;
+    const users = (await db.query("SELECT id, name, user_color FROM users"))
+      .rows;
     console.log(users);
 
     const visitedCountries = (
@@ -36,7 +37,7 @@ app.get("/", async (req, res) => {
     res.render("index.ejs", {
       countries: visitedCountries,
       users,
-      user: "Sanni",
+      user: req.query.user,
       success: req.query.success,
       error: req.query.error,
     });
@@ -53,10 +54,10 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/add", async (req, res) => {
-  let newCountry = req.body.country;
-  let activeUserID = req.body.activeUserID;
-  console.log(activeUserID);
   try {
+    let newCountry = req.body.country;
+    let activeUserID = req.body.activeUserID;
+    console.log("id is:" + activeUserID);
     const newCountryMultiPart = newCountry.trim().split(/\s+/);
     newCountry =
       newCountryMultiPart.length > 1
@@ -68,7 +69,7 @@ app.post("/add", async (req, res) => {
     console.log(newCountry);
 
     newCountry = await db.query(
-      "Select country_code from countries WHERE country_name ILIKE $1",
+      "SELECT country_code FROM countries WHERE country_name ILIKE $1",
       [`%${newCountry}%`]
     );
     newCountry = newCountry.rows[0].country_code;
@@ -77,9 +78,9 @@ app.post("/add", async (req, res) => {
       "INSERT INTO visited_countries (country_code, user_id) VALUES ($1, $2)",
       [newCountry, activeUserID]
     );
-    res.redirect("/?success=true");
+    res.redirect(`/?success=true&user=${activeUserID}`);
   } catch (err) {
     console.error("Error adding country:", err.message);
-    res.redirect("/?error=true");
+    res.redirect(`/?error=true&user=${activeUserID}`);
   }
 });
