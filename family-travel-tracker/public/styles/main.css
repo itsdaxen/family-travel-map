@@ -1,3 +1,22 @@
+:root {
+  --tab-hue: 180;
+  --tab-sat: 100%;
+  --tab-light: 30%;
+  --tab-light-hover: 40%;
+  --tab-light-active: 35%;
+
+  --tab-color: hsl(var(--tab-hue), var(--tab-sat), var(--tab-light));
+  --tab-color-hover: hsl(
+    var(--tab-hue),
+    var(--tab-sat),
+    var(--tab-light-hover)
+  );
+  --tab-color-active: hsl(
+    var(--tab-hue),
+    var(--tab-sat),
+    var(--tab-light-active)
+  );
+}
 html {
   box-sizing: border-box;
 }
@@ -101,4 +120,43 @@ button {
   padding: 15px;
   left: 0;
   bottom: 0;
+}
+
+/* User tab section */
+.user-tab-container {
+  width: 100%;
+}
+
+.user-tab-container ul {
+  display: flex;
+  padding: 1rem 0 0 0;
+  margin: 0;
+  list-style: none;
+}
+
+.user-tab-container ul li {
+  padding: 1rem;
+  background-color: var(--tab-color);
+  border-radius: 12px 12px 0 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.user-tab-container ul li:hover,
+.user-tab-container ul li:focus {
+  background-color: var(--tab-color-hover);
+}
+
+.user-tab-container ul li.active {
+  background-color: var(--tab-color-active);
+}
+
+.user-tab-container ul li.add-user {
+  background-color: hsl(180, 19%, 27%);
+}
+
+.user-tab-container ul li.add-user:hover,
+.user-tab-container ul li.add-user:focus {
+  background-color: hsl(180, 19%, 30%);
 }
