@@ -25,10 +25,18 @@ const db = new Pool({
 
 app.get("/", async (req, res) => {
   try {
-    const result = await db.query("SELECT country_code FROM visited_countries");
-    const countries = result.rows.map((row) => row.country_code.toUpperCase());
+    const users = (await db.query("SELECT id, name FROM users")).rows;
+    console.log(users);
+
+    const visitedCountries = (
+      await db.query("SELECT country_code, user_id FROM visited_countries")
+    ).rows;
+    console.log(visitedCountries);
+
     res.render("index.ejs", {
-      countries,
+      countries: visitedCountries,
+      users,
+      user: "Sanni",
       success: req.query.success,
       error: req.query.error,
     });
@@ -36,6 +44,8 @@ app.get("/", async (req, res) => {
     console.error("Error loading countries:", err.message);
     res.render("index.ejs", {
       countries: [],
+      users: null,
+      user: null,
       success: false,
       error: true,
     });
@@ -44,6 +54,8 @@ app.get("/", async (req, res) => {
 
 app.post("/add", async (req, res) => {
   let newCountry = req.body.country;
+  let activeUserID = req.body.activeUserID;
+  console.log(activeUserID);
   try {
     const newCountryMultiPart = newCountry.trim().split(/\s+/);
     newCountry =
@@ -60,9 +72,11 @@ app.post("/add", async (req, res) => {
       [`%${newCountry}%`]
     );
     newCountry = newCountry.rows[0].country_code;
-    await db.query("INSERT INTO visited_countries (country_code) VALUES ($1)", [
-      newCountry,
-    ]);
+    //TODO: make it active user id
+    await db.query(
+      "INSERT INTO visited_countries (country_code, user_id) VALUES ($1, $2)",
+      [newCountry, activeUserID]
+    );
     res.redirect("/?success=true");
   } catch (err) {
     console.error("Error adding country:", err.message);
