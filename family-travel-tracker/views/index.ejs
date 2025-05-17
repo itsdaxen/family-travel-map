@@ -12,16 +12,25 @@
   </head>
 
   <body>
+    <div class="overlay" onclick="handleOverlay()"></div>
     <!-- TODO: Implement the section, nb. the section is hidden and on click on new user the section pops up with z index above others and provides a basic form -->
-    <section class="new-user-form-container">
+    <section class="new-user-form">
+      <span onclick="handleOverlay()">&times;</span>
       <form id="newUser" action="/addNewUser" method="post">
+        <label for="newUserName">Enter name:</label>
         <input
           type="text"
           name="newUserName"
           placeholder="Enter new user's name..."
         />
-        <label for="newUserColor">Pick a color</label>
-        <input type="color" name="newUserColor" value="#ffff" />
+        <label for="newUserColor">Pick a color:</label>
+        <input
+          type="color"
+          name="newUserColor"
+          value="#f24f67"
+          class="colorPicker"
+        />
+        <button type="submit" class="submit-btn">Create User</button>
       </form>
     </section>
 

@@ -1,8 +1,12 @@
 // Set up the common variables
 const { users, visitedCountries } = window.appState;
 let { activeUserID } = window.appState;
+
 const totalCountSpan = document.querySelector(".total-count span"); // The h2 showing total count
 let userColor = "teal";
+
+const newUserForm = document.querySelector(".new-user-form");
+const overlay = document.querySelector(".overlay");
 
 function handleClickOnUserTab(id) {
   document.querySelectorAll(".user-tab-container ul li").forEach((li) => {
@@ -17,8 +21,32 @@ function handleClickOnUserTab(id) {
 }
 
 function handleAddNewUser() {
-  // when click happens this button submits a hidden form to the server
+  // On click this button submits a hidden form to the server
+  newUserForm.classList.add("active");
+  overlay.classList.add("active");
+  document.querySelector('input[name="newUserName"]').focus();
+  document.body.classList.add("no-scroll");
+
+  // Animations
+  // TODO: fade out
+  // TODO ask gpt if animation resets are needed here
+  newUserForm.style.animation = "none"; // Remove existing animation
+  void newUserForm.offsetWidth; // Force reflow (browser hack)
+  newUserForm.style.animation = null; // Allow animation to run again
 }
+
+function handleOverlay() {
+  newUserForm.classList.remove("active");
+  overlay.classList.remove("active");
+  newUserForm.style.animation = "none"; // Remove existing animation
+  void newUserForm.offsetWidth; // Force reflow (browser hack)
+  newUserForm.style.animation = null; // Allow animation to run again
+  document.body.classList.remove("no-scroll");
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") handleOverlay();
+});
 
 // TODO: add new user color logic
 

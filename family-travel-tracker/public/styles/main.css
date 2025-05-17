@@ -19,6 +19,9 @@ body {
   color: #d3ddef;
 }
 
+.no-scroll {
+  overflow: hidden;
+}
 .ag-canvas {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -70,7 +73,6 @@ body {
 }
 
 input {
-  font-family: "Roboto", sans-serif;
   outline: 0;
   background: #f2f2f2;
   width: 100%;
@@ -82,7 +84,6 @@ input {
 }
 
 button {
-  font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
   background: hsl(207, 5%, 35%);
@@ -98,7 +99,6 @@ button {
 }
 
 .total-count {
-  font-family: "Roboto", sans-serif;
   color: white;
   position: absolute;
   padding: 15px;
@@ -106,7 +106,7 @@ button {
   bottom: 0;
 }
 
-@keyframes fadeCount {
+@keyframes fadeIn {
   from {
     opacity: 0;
   }
@@ -115,8 +115,17 @@ button {
   }
 }
 
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .total-count span {
-  animation: fadeCount 0.4s ease;
+  animation: fadeIn 0.4s ease;
 }
 
 /* User tab section */
@@ -139,6 +148,7 @@ button {
   cursor: pointer;
   transition: background-color 0.2s ease;
   user-select: none;
+  border-bottom: solid 3px rgba(1, 1, 1, 0);
 }
 
 .user-tab-container ul li:hover,
@@ -150,6 +160,7 @@ button {
 .user-tab-container ul li.active {
   background-color: var(--tab-color-active);
   color: var(--tab-text-color-active);
+  border-bottom: solid 3px #21252b;
 }
 
 .user-tab-container ul li.add-user {
@@ -161,14 +172,157 @@ button {
   background-color: hsl(205, 6%, 63%);
 }
 
-/* New user section */
-.new-user-form-container {
-  display: flex;
-  position: absolute;
+/* New user form section */
+/* todo */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(46, 46, 46, 0.3);
+  z-index: 2;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.125s ease;
+}
+
+.overlay.active {
+  display: block;
+}
+
+@keyframes newUserFormZoomIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.new-user-form {
+  display: none;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1;
-  background-color: rgb(247, 247, 247);
-  padding: 100px;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2.5rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 380px;
+  width: 90%;
+  transition: all 0.3 ease;
+  animation: newUserFormZoomIn 0.125s ease;
+}
+
+.new-user-form.active {
+  display: flex;
+}
+
+.new-user-form label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+  display: inline-block;
+  width: 100px;
+  margin-right: 0.5rem;
+}
+
+.new-user-form input[type="text"] {
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e1e1e1;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background-color: #f9f9f9;
+}
+
+.new-user-form input[type="text"]:focus {
+  outline: none;
+  border-color: #0071e3;
+  background-color: #fff;
+  box-shadow: 0 0 0 1px rgba(0, 113, 227, 0.2);
+}
+
+.colorPicker {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 48px;
+  height: 48px;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 2px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.colorPicker::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
+}
+
+.colorPicker::-moz-color-swatch {
+  border: none;
+  border-radius: 6px;
+}
+
+.colorPicker:hover {
+  border-color: #0071e3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.colorPicker:focus {
+  outline: none;
+  border-color: #0071e3;
+  box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.2);
+}
+
+.submit-btn {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.875rem 1.5rem;
+  background-color: #0071e3;
+  color: white;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: -0.01em;
+}
+
+.submit-btn:hover {
+  background-color: #0077ed;
+  transform: translateY(-0.5px);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.2);
+}
+
+.new-user-form span {
+  width: 30px;
+  text-align: center;
+  color: rgb(243, 243, 243);
+  background-color: rgba(63, 63, 63, 0.6);
+  padding: 5px;
+  border-radius: 50%;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.new-user-form span:hover {
+  background-color: rgba(63, 63, 63, 1);
 }

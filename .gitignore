@@ -1,0 +1,15 @@
+# dependencies
+node_modules/
+
+# build artifacts
+dist/
+build/
+*.log
+
+# TypeScript
+*.tsbuildinfo
+*.d.ts
+*.map
+
+# Optional: ignore .env and others
+.env
