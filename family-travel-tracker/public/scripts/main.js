@@ -1,7 +1,6 @@
 // Set up the common variables
 const { users, visitedCountries } = window.appState;
 let { activeUserID } = window.appState;
-
 const totalCountSpan = document.querySelector(".total-count span"); // The h2 showing total count
 let userColor = "teal";
 
@@ -17,7 +16,11 @@ function handleClickOnUserTab(id) {
   calTotal();
 }
 
-// TODO: we need to get color of user and then modify css based on that
+function handleAddNewUser() {
+  // when click happens this button submits a hidden form to the server
+}
+
+// TODO: add new user color logic
 
 function colorTabs() {
   users.forEach((user) => {
@@ -25,15 +28,48 @@ function colorTabs() {
 
     const elementID = document.querySelector(`#userTab${user.id}`);
     if (elementID) {
-      elementID.style.backgroundColor = user.user_color;
+      const colorParts = user.user_color.trim().split(",");
+      const hue = colorParts[0].trim().replace("hsl(", "");
+      const saturation = colorParts[1].trim().replace("%", "");
+      const lightness = Number(colorParts[2].trim().replace("%)", ""));
 
-      const colorParts = user.user_color.split(",");
-      const hue = colorParts[0].replace("hsl(", "");
-      const saturation = colorParts[1].replace("%", "");
-      const lightness = Number(colorParts[2].replace("%)", ""));
+      // TODO: refactor and modularize the color logic
 
-      const textL = lightness > 35 ? 20 : 90;
-      elementID.style.color = `hsl(${hue}, ${saturation}%, ${textL}%)`;
+      // normal background color
+      elementID.style.setProperty(
+        "--tab-color",
+        `hsl(${hue}, ${saturation}%, ${lightness}%)`
+      );
+
+      // normal text color
+      elementID.style.setProperty(
+        "--tab-text-color",
+        `hsl(0, 5%, ${lightness > 60 ? 10 : 98}%)`
+      );
+
+      // hover background color
+      elementID.style.setProperty(
+        "--tab-color-hover",
+        `hsl(${hue}, ${saturation}%, ${lightness - 10}%)`
+      );
+
+      // hover text color
+      elementID.style.setProperty(
+        "--tab-text-color-hover",
+        `hsl(0, 5%, ${lightness - 10 > 60 ? 10 : 98}%)`
+      );
+
+      // active background color
+      elementID.style.setProperty(
+        "--tab-color-active",
+        `hsl(${hue}, ${saturation}%, ${lightness - 11}%)`
+      );
+
+      // active text color
+      elementID.style.setProperty(
+        "--tab-text-color-active",
+        `hsl(0, 5%, ${lightness - 11 > 60 ? 10 : 98}%)`
+      );
     }
   });
 }

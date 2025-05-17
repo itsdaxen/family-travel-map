@@ -54,9 +54,9 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/add", async (req, res) => {
+  let newCountry = req.body.country;
+  let activeUserID = req.body.activeUserID;
   try {
-    let newCountry = req.body.country;
-    let activeUserID = req.body.activeUserID;
     console.log("id is:" + activeUserID);
     const newCountryMultiPart = newCountry.trim().split(/\s+/);
     newCountry =

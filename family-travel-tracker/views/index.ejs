@@ -12,6 +12,19 @@
   </head>
 
   <body>
+    <!-- TODO: Implement the section, nb. the section is hidden and on click on new user the section pops up with z index above others and provides a basic form -->
+    <section class="new-user-form-container">
+      <form id="newUser" action="/addNewUser" method="post">
+        <input
+          type="text"
+          name="newUserName"
+          placeholder="Enter new user's name..."
+        />
+        <label for="newUserColor">Pick a color</label>
+        <input type="color" name="newUserColor" value="#ffff" />
+      </form>
+    </section>
+
     <section class="user-tab-section">
       <div class="user-tab-container">
         <ul>
@@ -25,7 +38,7 @@
           <% }) %>
           <!-- TODO: Add a new user tab with personal color -->
           <!-- TODO add new color logic -->
-          <li class="add-user">+ add user</li>
+          <li class="add-user" onClick="handleAddNewUser()">+ add user</li>
         </ul>
       </div>
     </section>

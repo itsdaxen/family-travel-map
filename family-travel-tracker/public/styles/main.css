@@ -1,22 +1,4 @@
 :root {
-  --tab-hue: 180;
-  --tab-sat: 100%;
-  --tab-light: 30%;
-  --tab-light-hover: 40%;
-  --tab-light-active: 35%;
-
-  --tab-color: hsl(var(--tab-hue), var(--tab-sat), var(--tab-light));
-  --tab-color-hover: hsl(
-    var(--tab-hue),
-    var(--tab-sat),
-    var(--tab-light-hover)
-  );
-  --tab-color-active: hsl(
-    var(--tab-hue),
-    var(--tab-sat),
-    var(--tab-light-active)
-  );
-
   font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
 }
 html {
@@ -103,11 +85,11 @@ button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: teal;
-  /* float: right;
-  margin-bottom: -100px; */
+  background: hsl(207, 5%, 35%);
+  margin: 20px 0 0 10px;
   border: 0;
-  padding: 15px;
+  border-radius: 12px;
+  padding: 18px;
   color: #ffffff;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
@@ -142,7 +124,6 @@ button {
   width: 100%;
 }
 
-/* todo custom color logic */
 .user-tab-container ul {
   display: flex;
   padding: 1rem 0 0 0;
@@ -152,7 +133,8 @@ button {
 
 .user-tab-container ul li {
   padding: 1rem;
-  background-color: var(--tab-color);
+  background-color: var(--tab-color, hsl(171, 68%, 42%));
+  color: var(--tab-text-color);
   border-radius: 12px 12px 0 0;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -162,17 +144,31 @@ button {
 .user-tab-container ul li:hover,
 .user-tab-container ul li:focus {
   background-color: var(--tab-color-hover);
+  color: var(--tab-text-color-hover);
 }
 
 .user-tab-container ul li.active {
   background-color: var(--tab-color-active);
+  color: var(--tab-text-color-active);
 }
 
 .user-tab-container ul li.add-user {
-  background-color: hsl(180, 19%, 27%);
+  background-color: hsl(205, 6%, 59%);
 }
 
 .user-tab-container ul li.add-user:hover,
 .user-tab-container ul li.add-user:focus {
-  background-color: hsl(180, 19%, 30%);
+  background-color: hsl(205, 6%, 63%);
+}
+
+/* New user section */
+.new-user-form-container {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  background-color: rgb(247, 247, 247);
+  padding: 100px;
 }
