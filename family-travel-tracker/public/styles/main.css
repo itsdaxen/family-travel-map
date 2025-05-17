@@ -124,11 +124,25 @@ button {
   bottom: 0;
 }
 
+@keyframes fadeCount {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.total-count span {
+  animation: fadeCount 0.4s ease;
+}
+
 /* User tab section */
 .user-tab-container {
   width: 100%;
 }
 
+/* todo custom color logic */
 .user-tab-container ul {
   display: flex;
   padding: 1rem 0 0 0;
