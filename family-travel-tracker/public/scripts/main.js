@@ -22,33 +22,29 @@ function handleClickOnUserTab(id) {
 
 function handleAddNewUser() {
   // On click this button submits a hidden form to the server
+  newUserForm.style.animation = "newUserFormZoomIn 0.125s ease";
+  overlay.style.animation = "fadeIn 0.125s ease";
+
   newUserForm.classList.add("active");
   overlay.classList.add("active");
   document.querySelector('input[name="newUserName"]').focus();
   document.body.classList.add("no-scroll");
-
-  // Animations
-  // TODO: fade out
-  // TODO ask gpt if animation resets are needed here
-  newUserForm.style.animation = "none"; // Remove existing animation
-  void newUserForm.offsetWidth; // Force reflow (browser hack)
-  newUserForm.style.animation = null; // Allow animation to run again
 }
 
-function handleOverlay() {
-  newUserForm.classList.remove("active");
-  overlay.classList.remove("active");
-  newUserForm.style.animation = "none"; // Remove existing animation
-  void newUserForm.offsetWidth; // Force reflow (browser hack)
-  newUserForm.style.animation = null; // Allow animation to run again
-  document.body.classList.remove("no-scroll");
+function handleCloseNewUserForm() {
+  newUserForm.style.animation = "fadeOut 0.125s ease";
+  overlay.style.animation = "fadeOut 0.125s ease";
+
+  setTimeout(() => {
+    newUserForm.classList.remove("active");
+    overlay.classList.remove("active");
+    document.body.classList.remove("no-scroll");
+  }, 125);
 }
 
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") handleOverlay();
+  if (e.key === "Escape") handleCloseNewUserForm();
 });
-
-// TODO: add new user color logic
 
 function colorTabs() {
   users.forEach((user) => {
@@ -117,7 +113,7 @@ function colorCountries() {
 }
 
 function calTotal() {
-  // Loop through all countries userID
+  // Loop through all countries for the userID
   const sum = visitedCountries.filter(
     (country) => Number(country.user_id) === activeUserID
   ).length;

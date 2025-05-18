@@ -184,6 +184,16 @@ button {
   animation: fadeIn 0.125s ease;
 }
 
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(46, 46, 46, 0.3);
+  z-index: 2;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.125s ease;
+}
+
 .overlay.active {
   display: block;
 }

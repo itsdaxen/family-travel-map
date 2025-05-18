@@ -12,10 +12,10 @@
   </head>
 
   <body>
-    <div class="overlay" onclick="handleOverlay()"></div>
+    <div class="overlay" onclick="handleCloseNewUserForm()"></div>
     <!-- TODO: Implement the section, nb. the section is hidden and on click on new user the section pops up with z index above others and provides a basic form -->
     <section class="new-user-form">
-      <span onclick="handleOverlay()">&times;</span>
+      <span onclick="handleCloseNewUserForm()">&times;</span>
       <form id="newUser" action="/addNewUser" method="post">
         <label for="newUserName">Enter name:</label>
         <input
