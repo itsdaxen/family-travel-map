@@ -9,12 +9,18 @@ const newUserForm = document.querySelector(".new-user-form");
 const overlay = document.querySelector(".overlay");
 
 function handleClickOnUserTab(id) {
+  activeUserID = id;
   document.querySelectorAll(".user-tab-container ul li").forEach((li) => {
     li.classList.remove("active");
   });
-  activeUserID = id;
+  document.querySelectorAll(".remove-user").forEach((el) => {
+    el.classList.remove("active");
+  });
+
+  // TODO: user removal
   document.querySelector(`#userTab${id}`).classList.add("active");
-  document.querySelector("#activeUserField").value = activeUserID;
+  document.querySelector("#activeUserField").value = id;
+  document.querySelector(`#removeUser${id}`).classList.add("active");
   colorTabs();
   colorCountries();
   calTotal();
@@ -167,8 +173,6 @@ function colorCountries() {
   Array.from(document.querySelector(".ag-canvas_svg").children).forEach(
     (child) => (child.style.fill = null)
   );
-  console.log(document.body.children);
-  console.log(Array.from(document.body.children));
 
   // Loop through all countries and check their id
   visitedCountries.forEach((country) => {
@@ -203,7 +207,4 @@ document.addEventListener("DOMContentLoaded", () => {
   colorTabs();
   colorCountries();
   calTotal();
-
-  // TEST: testing hexToHSL
-  hexToHSL();
 });
