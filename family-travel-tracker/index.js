@@ -73,7 +73,6 @@ app.post("/add", async (req, res) => {
       [`%${newCountry}%`]
     );
     newCountry = newCountry.rows[0].country_code;
-    //TODO: make it active user id
     await db.query(
       "INSERT INTO visited_countries (country_code, user_id) VALUES ($1, $2)",
       [newCountry, activeUserID]
@@ -83,4 +82,20 @@ app.post("/add", async (req, res) => {
     console.error("Error adding country:", err.message);
     res.redirect(`/?error=true&user=${activeUserID}`);
   }
+});
+
+app.post("/addNewUser", async (req, res) => {
+  // TODO: try catch
+  const { newUserName, newUserColorHSL } = req.body;
+  console.log(newUserColorHSL);
+  const result = await db.query(
+    "INSERT INTO users (name, user_color) VALUES ($1, $2) RETURNING id",
+    [newUserName, newUserColorHSL]
+  );
+  // const result = await db.query(
+  //   "SELECT id FROM users WHERE name = $1 ORDER BY id DESC LIMIT 1",
+  //   [newUserName]
+  // );
+  const activeUserID = result.rows[0].id;
+  res.redirect(`/?success=true&user=${activeUserID}`);
 });

@@ -173,7 +173,6 @@ button {
 }
 
 /* New user form section */
-/* todo */
 .overlay {
   display: none;
   position: fixed;
@@ -212,6 +211,7 @@ button {
   border-radius: 1.25rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
+  /* todo: check */
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   max-width: 380px;
   width: 90%;
