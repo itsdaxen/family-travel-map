@@ -25,12 +25,15 @@ const db = new Pool({
 
 app.get("/", async (req, res) => {
   try {
-    const users = (await db.query("SELECT id, name, user_color FROM users"))
-      .rows;
+    const users = (
+      await db.query("SELECT id, name, user_color FROM users ORDER BY id ASC")
+    ).rows;
     console.log(users);
 
     const visitedCountries = (
-      await db.query("SELECT country_code, user_id FROM visited_countries")
+      await db.query(
+        "SELECT country_code, user_id FROM visited_countries ORDER BY user_id ASC"
+      )
     ).rows;
     console.log(visitedCountries);
 
