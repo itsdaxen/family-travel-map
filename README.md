@@ -65,7 +65,8 @@ CREATE TABLE users (
 CREATE TABLE visited_countries (
   id SERIAL PRIMARY KEY,
   country_code CHAR(2),
-  user_id INTEGER REFERENCES users(id)
+  user_id INTEGER REFERENCES users(id),
+  UNIQUE (country_code, user_id)
 );
 
 CREATE TABLE countries (
