@@ -99,3 +99,21 @@ app.post("/addNewUser", async (req, res) => {
   const activeUserID = result.rows[0].id;
   res.redirect(`/?success=true&user=${activeUserID}`);
 });
+
+// TODO: try catch, research on params
+app.delete("/removeUser/:id", async (req, res) => {
+  // TODO: replace method
+  const userID = req.params.id;
+  console.log(userID);
+  try {
+    await db.query("DELETE FROM visited_countries WHERE user_id = $1", [
+      userID,
+    ]);
+    await db.query("DELETE FROM users WHERE id = $1", [userID]);
+    res.status(200).json({ success: true });
+
+    // TODO
+  } catch {
+    res.redirect(`/?error=true&user=${userID}`);
+  }
+});

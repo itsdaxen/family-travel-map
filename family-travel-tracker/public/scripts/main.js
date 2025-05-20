@@ -196,6 +196,9 @@ function calTotal() {
   totalCountSpan.style.animation = null; // Allow animation to run again
 }
 
+function removeUser(id) {
+  fetch(`/removeUser/${id}`, { method: "DELETE" });
+}
 // TODO: check why called on load
 document.querySelector("#newUser").addEventListener("submit", (e) => {
   const hex = document.querySelector("#newUserColorHex").value;

@@ -43,7 +43,10 @@
             id="userTab<%= user.id %>"
             onClick="handleClickOnUserTab(<%= user.id %>)"
           >
-            <span id="removeUser<%= user.id %>" class="remove-user"
+            <span
+              id="removeUser<%= user.id %>"
+              class="remove-user"
+              onClick="removeUser(<%= user.id %>)"
               >&times;</span
             >
             <%= user.name %>
