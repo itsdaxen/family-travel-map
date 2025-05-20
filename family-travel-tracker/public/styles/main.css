@@ -174,33 +174,38 @@ button {
 }
 
 /* delete user */
+.user-tab-container ul li span.remove-user-wrapper {
+  position: absolute;
+  height: 40px;
+  width: 50px;
+  right: 0;
+  top: -7px;
+  z-index: 3;
+  display: flex;
+  justify-content: flex-end;
+  background-color: transparent;
+}
+
 .user-tab-container ul li span.remove-user {
   font-size: 12px;
   width: 20px;
   height: 20px;
-  right: -12px;
-  top: -6px;
-  text-align: center;
-  color: rgb(243, 243, 243);
   background-color: rgba(63, 63, 63, 0.6);
   padding: 5px;
   border-radius: 50%;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  transition: all 0.3s ease;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 4;
   opacity: 0;
 }
 
-.user-tab-container ul li span.remove-user:hover {
+.remove-user-wrapper:hover .remove-user {
   background-color: rgba(63, 63, 63, 0.8);
-}
-
-.user-tab-container ul li span.remove-user.active {
-  opacity: 100;
+  opacity: 1;
 }
 
 /* New user form section */
@@ -242,11 +247,8 @@ button {
   border-radius: 1.25rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
-  /* todo: check */
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   max-width: 380px;
   width: 90%;
-  transition: all 0.3 ease;
 }
 
 .new-user-form.active {

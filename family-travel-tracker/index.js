@@ -85,24 +85,21 @@ app.post("/add", async (req, res) => {
 });
 
 app.post("/addNewUser", async (req, res) => {
-  // TODO: try catch
   const { newUserName, newUserColorHSL } = req.body;
-  console.log(newUserColorHSL);
-  const result = await db.query(
-    "INSERT INTO users (name, user_color) VALUES ($1, $2) RETURNING id",
-    [newUserName, newUserColorHSL]
-  );
-  // const result = await db.query(
-  //   "SELECT id FROM users WHERE name = $1 ORDER BY id DESC LIMIT 1",
-  //   [newUserName]
-  // );
-  const activeUserID = result.rows[0].id;
-  res.redirect(`/?success=true&user=${activeUserID}`);
+  try {
+    const result = await db.query(
+      "INSERT INTO users (name, user_color) VALUES ($1, $2) RETURNING id",
+      [newUserName, newUserColorHSL]
+    );
+    const activeUserID = result.rows[0].id;
+    res.redirect(`/?success=true&user=${activeUserID}`);
+  } catch (err) {
+    console.error("Error creating user:", err.message);
+    res.redirect("/?error=true");
+  }
 });
 
-// TODO: try catch, research on params
 app.delete("/removeUser/:id", async (req, res) => {
-  // TODO: replace method
   const userID = req.params.id;
   console.log(userID);
   try {
@@ -111,9 +108,7 @@ app.delete("/removeUser/:id", async (req, res) => {
     ]);
     await db.query("DELETE FROM users WHERE id = $1", [userID]);
     res.status(200).json({ success: true });
-
-    // TODO
   } catch {
-    res.redirect(`/?error=true&user=${userID}`);
+    res.status(500).json({ success: false, error: "Failed to delete user." });
   }
 });

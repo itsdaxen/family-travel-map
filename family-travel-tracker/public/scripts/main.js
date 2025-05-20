@@ -17,10 +17,8 @@ function handleClickOnUserTab(id) {
     el.classList.remove("active");
   });
 
-  // TODO: user removal
   document.querySelector(`#userTab${id}`).classList.add("active");
   document.querySelector("#activeUserField").value = id;
-  document.querySelector(`#removeUser${id}`).classList.add("active");
   colorTabs();
   colorCountries();
   calTotal();
@@ -55,7 +53,6 @@ document.addEventListener("keydown", (e) => {
 function hexToHSL(hex) {
   hex = hex.replace("#", ""); // Drop the #
 
-  // TODO: consider the case of short hex
   // Part the hex
   const firstPart = hex.slice(0, 2);
   const secondPart = hex.slice(2, 4);
@@ -71,7 +68,6 @@ function hexToHSL(hex) {
   const min = Math.min(r, g, b);
   const delta = max - min;
 
-  // TODO: ...
   // Calculate HSL values
   // Find lightness
   let l = (max + min) / 2;
@@ -126,8 +122,6 @@ function colorTabs() {
       const hue = colorParts[0].trim().replace("hsl(", "");
       const saturation = colorParts[1].trim().replace("%", "");
       const lightness = Number(colorParts[2].trim().replace("%)", ""));
-
-      // TODO: refactor and modularize the color logic
 
       // normal background color
       tabID.style.setProperty(
@@ -189,7 +183,6 @@ function calTotal() {
     (country) => Number(country.user_id) === activeUserID
   ).length;
 
-  //To be implemented by onClick and by DOM load
   totalCountSpan.innerHTML = sum;
   totalCountSpan.style.animation = "none"; // Remove existing animation
   void totalCountSpan.offsetWidth; // Force reflow (browser hack)
@@ -197,9 +190,27 @@ function calTotal() {
 }
 
 function removeUser(id) {
-  fetch(`/removeUser/${id}`, { method: "DELETE" });
+  if (!confirm("Are you sure you want to remove this user?")) {
+    return;
+  }
+  const el = document.getElementById(`userTab${id}`);
+  fetch(`/removeUser/${id}`, { method: "DELETE" })
+    .then((res) => res.json())
+    .then(() => {
+      el.remove();
+      const filteredUsers = users.filter((user) => user.id != id);
+      window.appState.user = filteredUsers;
+      activeUserID = filteredUsers[0].id;
+
+      colorTabs();
+      colorCountries();
+      calTotal();
+      handleClickOnUserTab(activeUserID);
+    })
+    .catch(
+      (err) => (document.querySelector('input[name="country"]').value = err)
+    );
 }
-// TODO: check why called on load
 document.querySelector("#newUser").addEventListener("submit", (e) => {
   const hex = document.querySelector("#newUserColorHex").value;
   const hsl = hexToHSL(hex);
@@ -210,4 +221,5 @@ document.addEventListener("DOMContentLoaded", () => {
   colorTabs();
   colorCountries();
   calTotal();
+  handleClickOnUserTab(activeUserID);
 });
