@@ -2,7 +2,9 @@ const { Pool } = require("pg");
 const express = require("express");
 const app = express();
 const port = 3000;
+const morgan = require("morgan");
 
+app.use(morgan("dev"));
 // Add body-parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
